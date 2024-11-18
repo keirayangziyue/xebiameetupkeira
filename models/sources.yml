@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: meetupservice 
+    description: data of Meet Up 
+    tables:
+      - name: source_events
+        description: source of Events
+      - name: source_groups
+        description: source of Groups
+      - name: source_users
+        description: source of Users
+      - name: source_venues
+        description: source of Venues

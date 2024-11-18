@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: certified_events_users_rsvp
+    description: >
+      This model contains information of the first and final RSVP response of each user for each event. 
+      If a user has only one response to an event, the information of first and final response will be the same. 
+      
+      The combination of 'event_id' and 'rsvp_user_id' serves as the unique key for this model.
+      The 'event_id' column uniquely identifies an event, while the 'group_id' column uniquely identifies a group,
+      and the 'rsvp_user_id' column uniquely identifies a user.
+
+    columns:
+      - name: event_id
+        description: The unique identifier of an event. 
+        data_type: string
+        data_tests:
+          - not_null
+      - name: event_name
+        description: Name of the event.
+        data_type: string 
+      - name: event_date
+        description: The start date of the event. 
+        data_type: date
+      - name: group_id
+        description: The unique identifier of the group which organises this event.
+        data_type: string
+      - name: venue_id 
+        description: The unique identifier of the venue of the event.
+        data_type: integer 
+      - name: rsvp_user_id
+        description: The unique identifier of the user who gave this response. 
+        data_type: integer
+        data_tests:
+          - relationships:
+              to: ref('certified_users') 
+              field: user_id    
+      - name: first_response_date 
+        description: The date when this user gave the first response to this event.  
+        data_type: date
+      - name: final_response_date
+        description: >
+          The date when this user gave the last response to this event. Is an user only gave 1 response
+          to a specific event, the first_response_date and last_response_date will be the same.    
+        data_type: date
+      - name: final_response
+        description: >
+          The final response this user gave to this event. The value can be 'yes', 'no', 'waitlist'. 
+        data_type: string
+        data_tests:
+          - accepted_values:
+              values: ['yes', 'no', 'waitlist']
+      - name: final_response_guests
+        description: Number of guests the user will bring to the event that stated in the final response.
+        data_type: integer
+      - name: first_response_to_start
+        description: Number of days from the date that user gave the first response to the date of event start.
+        data_type: integer 
+      - name: final_response_to_start
+        description: Number of days from the date that user gave the final response to the date of event start.
+        data_type: integer 
+      - name: response_changed
+        description: >
+          Whether a user gave responses in different dates (more than 1 response) to this event. 
+          1 stands for yes, 0 stands for no.
+        data_type: integer
+      - name: user_country
+        description: Country of the user.
+        data_type: string
+      - name: user_city
+        description: City of the user.
+        data_type: string
+      - name: venue_country
+        description: The country that the event venue is in.
+        data_type: string 
+      - name: venue_city 
+        description: The city that the event venue is in.
+        data_type: string
+      - name: user_venue_same_location
+        description: Whether the use is in the same country and same city as the event venue.
+        data_type: boolean
+       
+
+
